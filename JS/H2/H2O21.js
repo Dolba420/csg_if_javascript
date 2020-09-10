@@ -5,7 +5,7 @@ var cirkel = {
   y: null,
   alpha: 0.8,
   aantalRaak: 0,
-
+  teller:0,
   teken() {
     push();
     noStroke();
@@ -21,7 +21,11 @@ var cirkel = {
 
   controleerRaak() {
     afstandMuisCirkel = dist(mouseX,mouseY,this.x,this.y);
-
+    if(afstandMuisCirkel < this.diameter/2 && mouseIsPressed == true){
+        this.kiesEenPlek();
+        this.teller++;
+        this.alpha = this.alpha * 0.9;
+    }
   }
 }
 
@@ -49,4 +53,5 @@ function draw() {
 
   cirkel.controleerRaak();
   cirkel.teken();
+  text(cirkel.teller,10,50);
 }
