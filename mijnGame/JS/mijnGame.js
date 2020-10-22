@@ -17,6 +17,7 @@ var AI1 = {
     sharesOutstanding:100000,
     owners:[0,1000,0,0],
     investorconfidence:1,
+    baselocation:null,
 }
 var AI2 = {
     geld: 0,
@@ -26,6 +27,8 @@ var AI2 = {
     sharesOutstanding:100000,
     owners:[0,0,1000,0],
     investorconfidence:1,
+    baselocation:null,
+
 }
 var AI3 = {
     geld: 0,
@@ -35,6 +38,8 @@ var AI3 = {
     sharesOutstanding:100000,
     owners:[0,0,0,1000],
     investorconfidence:1,
+    baselocation:null,
+
 }
 
 var players = [financials,AI1,AI2,AI3];
@@ -652,7 +657,7 @@ function charts() {
 
 function leen(type) {
     for (var teller = 0; teller < ordermultiplier; teller++) {
-        if (type == 0) {
+        /*if (type == 0) {
             financials.schuld = round(financials.schuld + 1000, 2);
             financials.geld = round(financials.geld + 1000, 2);
             rente = rente * 1.3;
@@ -678,6 +683,31 @@ function leen(type) {
                 }
                 else {
                     financials.geld = round(financials.geld - financials.schuld, 2);
+                    financials.schuld = 0;
+                }
+            }
+        }*/
+        if(type == 0){
+            financials.schuld = round(financials.schuld + 1000, 2);
+            financials.geld = round(financials.geld + 1000, 2);
+            rente = rente * 1.3;
+        }
+        if(type == 1){
+            if(financials.schuld == 0){
+
+            }
+            else if(financials.schuld > 1000 && financials.geld > 1000){
+                financials.schuld -= 1000;
+                financials.geld -= 1000;
+                rente *= 0.8
+            }
+            else if(financials.schuld <= 1000){
+                if(financials.schuld > financials.geld){
+                    financials.schuld -= financials.geld;
+                    financials.geld = 0;
+                }
+                else if(financials.schuld < financials.geld){
+                    financials.geld -= financials.schuld;
                     financials.schuld = 0;
                 }
             }
@@ -858,6 +888,9 @@ function generate() {
             territorymap[rij + kolom * mapvars[1]] = 0;
         }
     }
+    for(var loc = 0; loc<playernumber; loc++){
+
+    }
 }
 
 function speelveld() {
@@ -928,7 +961,12 @@ function returnProduction(num) {
             total += productie[a] * gebouwproductie[a][num];
         }
     }
-    return total;
+    if(total != NaN){
+        return total;
+    }
+    else{
+        return 0;
+    }
     total = 0;
 }
 
@@ -1029,6 +1067,8 @@ function koopaandelen(p,type){
            }
        }
 }
+
+
 
 
 
