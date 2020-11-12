@@ -8,8 +8,10 @@ var accuracy;
 var time = 60;
 var start = false;
 var afteltijd = 5;
-var crosshairpositie = [];
+var crosshairpositie = [0,0];
 var aftellen = false;
+var framecount = 0;
+
 class bal {
     constructor() {
         this.x = round(random(1, 7), 0) * 70;
@@ -39,8 +41,8 @@ class game {
     endscreen() {
 
         background("#003e8f");
-        text("score " + round(aantalraak * accuracy * 1000, 0), 30, 30);
-        text("accuracy " + round(accuracy * 100, 0) + "%", 30, 60);
+        text("score " + round(aantalraak * accuracy * 1000, 0), 100, 30);
+        text("accuracy " + round(accuracy * 100, 0) + "%", 400, 30);
     }
     aftel() {
         textSize(50);
@@ -49,12 +51,14 @@ class game {
     }
     tekencrosshair(){
         ellipse(canvas.width/2,canvas.height/2,10);
+        stroke(20);
+        line(10,canvas.width);
+        noStroke();
     }
     movement(){
     for (var n = 0; n < aantal; n++) {
-        //elementen[n].x += (crosshairpositie[0]-mouseX)/100;
-        elementen[n].y += (crosshairpositie[1]-mouseY)/100;
-        console.log(elementen[n].y);
+        elementen[n].x += ((crosshairpositie[0]-mouseX)/1);
+        elementen[n].y += ((crosshairpositie[1]-mouseY)/1);
     }
     }
 }
@@ -84,9 +88,11 @@ function mouseClicked() {
 
 
 function setup() {
-    canvas = createCanvas(1000, 800);
+     //noCursor();
+    canvas = createCanvas(displayWidth, displayHeight);
     canvas.parent('processing');
     noStroke();
+    textAlign(CENTER,CENTER);
     frameRate(60);
     for (var x = 0; x < aantal; x++) {
         elementen[x] = new bal();
@@ -94,8 +100,9 @@ function setup() {
 }
 
 function draw() {
-    crosshairpositie[0] = mouseX;
-    crosshairpositie[1] = mouseY;
+    
+    framecount++;
+     resizeCanvas(windowWidth, windowHeight);
     background("#b3b3b3");
     spel.tekencrosshair();
     spel.movement();
@@ -117,6 +124,12 @@ function draw() {
             start = true;
         }
     }
-
+    if(framecount % 2){
+        crosshairpositie[0] = mouseX;
+        crosshairpositie[1] = mouseY;
+    }
+    else{
+        spel.movement();
+    }
 }
 
